@@ -4,15 +4,9 @@
 {% block body %}
     <div class="container mt-4">
         <h1>Editer le bien</h1>
-        {% for flashMessage in app.session.flashbag.get('success') %}
 
-            {{ flashMessage }}
+        {{  include('admin/property/_form.html.twig', {form: form, button: 'Editer'}) }}
 
-        {% endfor %}
-        {{ form_start(form) }}
-            {{ form_widget(form) }}
-        <button class="btn btn-primary">Editer</button>
-        {{ form_end(form) }}
 
     </div>
 

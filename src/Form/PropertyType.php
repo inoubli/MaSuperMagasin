@@ -25,9 +25,9 @@ class PropertyType extends AbstractType
             ->add('bedrooms', IntegerType::class)
             ->add('floor', IntegerType::class)
             ->add('price', IntegerType::class)
-            ->add('heat', ChoiceType::class, array(
-                'choices' => $this->getChoices()
-            ))
+            ->add('heat', ChoiceType::class, [
+                'choices' => array_flip(Property::HEAT)
+            ])
             ->add('city', null, [
                 'label' => 'Ville'
             ])
@@ -42,8 +42,17 @@ class PropertyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Property::class,
+            'translation_domain' => 'forms'
         ]);
     }
+
+
+
+
+
+
+    //this function is already exist in PHP    => array_flip(array)
+    //array_flip — Remplace les clés par les valeurs, et les valeurs par les clés
     public function getChoices()
     {
         $choices = Property::HEAT;

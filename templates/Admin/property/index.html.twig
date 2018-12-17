@@ -8,6 +8,17 @@
 
         <h1>Gerer les biens</h1>
 
+        {% for flashMessage in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.flashes('delete') %}
+            <div class="alert alert-danger">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -22,12 +33,19 @@
                     <td>{{ property.title }}</td>
                     <td>
                         <a href="{{ path('admin.property.edit', {id: property.id} ) }}" class="btn btn-secondary">Editer</a>
+                        <form method="post" action="{{ path('admin.property.delete', {id : property.id}) }}" style="display: inline-block" onsubmit="return confirm('Etes vous sur de supprimer ce Bien ?')">
+                            <input type="hidden" name="_method" value="DELETE" >
+                            <input type="hidden" name="_token" value="{{ csrf_token( property.id) }}">
+                            <button class="btn btn-danger" >Supprimer</button>
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-
+        <div class="text-right">
+            <a href="{{ path('admin.property.new') }}" class="btn btn-primary">Creer un nouveau bien</a>
+        </div>
 
 
 
