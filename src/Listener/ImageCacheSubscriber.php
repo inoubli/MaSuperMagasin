@@ -4,9 +4,12 @@ namespace App\Listener;
 use App\Entity\Property;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Mapping\PostUpdate;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
@@ -46,13 +49,22 @@ class ImageCacheSubscriber implements EventSubscriber {
     }
 
     public function preUpdate(PreUpdateEventArgs $args){
+
         $entity = $args->getEntity();
        if (!$entity instanceof Property)
        {
            return;
        }
-       if ($entity->getImageFile() instanceof UploadableField){
+       if ($entity->getImageFile() instanceof UploadedFile){
            $this->cacheManager->remove($this->uploaderHelper->asset($entity,'imageFile'));
        }
     }
+
+
+//    public function postUpdate(LifecycleEventArgs $args)
+//    {
+//        dump($args->getEntity());
+//        dump($args->getObject());
+//    }
+
 }
